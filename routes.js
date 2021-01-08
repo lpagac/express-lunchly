@@ -36,9 +36,7 @@ router.post("/add/", async function (req, res, next) {
 
 router.get("/search", async function (req, res, next) {
   const searchTerm = req.query.term;
-  console.log("found searchTerm ", searchTerm)
   const customers = await Customer.search(searchTerm);
-  console.log("found customers ", customers)
 
   return res.render("customer_list.html", 
     { 
@@ -52,7 +50,6 @@ router.get("/search", async function (req, res, next) {
 /** Shows the top 10 customers with the most reservations */
 
 router.get("/best", async function (req, res, next) {
-  console.log("before getting customers")
   const customers = await Customer.topTen();
 
   return res.render("customer_list.html", 

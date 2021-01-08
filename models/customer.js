@@ -67,6 +67,7 @@ class Customer {
 
   static async search(term) {
     console.log(term);
+    let portion = `%${term}%`;
       const results = await db.query(
         `SELECT id,
                 first_name AS "firstName",
@@ -74,9 +75,9 @@ class Customer {
                 phone,
                 notes
         FROM customers
-        WHERE first_name ILIKE '%' || $1 || '%'
-          OR last_name ILIKE '%' || $1 || '%'`,
-        [term],
+        WHERE first_name ILIKE $1
+          OR last_name ILIKE $1`,
+        [portion],
       );
 
     return results.rows.map(c => new Customer(c));
