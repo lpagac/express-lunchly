@@ -66,7 +66,6 @@ class Customer {
   /** Search users by the term */
 
   static async search(term) {
-    console.log(term);
     let portion = `%${term}%`;
       const results = await db.query(
         `SELECT id,
