@@ -5,6 +5,8 @@
 const moment = require("moment");
 
 const db = require("../db");
+const { NotFoundError } = require("../expressError");
+const Customer = require('./customer');
 
 /** A reservation for a party */
 
@@ -22,6 +24,27 @@ class Reservation {
   getFormattedStartAt() {
     return moment(this.startAt).format("MMMM Do YYYY, h:mm a");
   }
+
+  /** Given a reservation id, return that reservation */
+
+  static async get(id) {
+    const result = await db.query(
+      `SELECT id,
+              customer_id AS "customerId",
+              num_guests AS "numGuests",
+              start_at AS "startAt",
+              notes AS "notes"
+      FROM reservations
+      WHERE id = $1`,
+        [id],
+    );
+    const reservation = result.rows[0];
+
+    if (reservation === undefined) throw new NotFoundError(`No reservation with id: ${id}`);
+
+    return new Reservation(reservation);
+  }
+
 
   /** given a customer id, find their reservations. */
 

@@ -9,6 +9,7 @@ CREATE DATABASE lunchly;
 CREATE TABLE customers (
     id integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     first_name text NOT NULL,
+    middle_name text NOT NULL DEFAULT '',
     last_name text NOT NULL,
     phone text,
     notes text DEFAULT '' NOT NULL

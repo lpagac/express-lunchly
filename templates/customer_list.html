@@ -7,7 +7,7 @@
   <h1>{{ heading }}</h1>
 
   {% if customers.length > 0 %}
-    <ul style="column-count: 4">
+    <{%if heading === 'Best Customers!' %}ol{% else %}ul{% endif %} style="column-count: 4">
       {% for customer in customers %}
         <li>
           <a href="/{{ customer.id }}/">
@@ -15,7 +15,7 @@
           </a>
         </li>
       {% endfor %}
-    </ul>
+    </{% if heading === 'Best Customers!' %}ol{% else %}ul{% endif %}>
   {% else %}
     <p>No customer matching: <i>{{term}}</i></p>
   {% endif %}

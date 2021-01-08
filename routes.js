@@ -25,8 +25,8 @@ router.get("/add/", async function (req, res, next) {
 /** Handle adding a new customer. */
 
 router.post("/add/", async function (req, res, next) {
-  const { firstName, lastName, phone, notes } = req.body;
-  const customer = new Customer({ firstName, lastName, phone, notes });
+  const { firstName, middleName, lastName, phone, notes } = req.body;
+  const customer = new Customer({ firstName, middleName, lastName, phone, notes });
   await customer.save();
 
   return res.redirect(`/${customer.id}/`);
@@ -60,6 +60,18 @@ router.get("/best", async function (req, res, next) {
   );
 });
 
+/** Handle editing a reservation */
+
+router.get('/reservations/:id/edit', async function (req, res, next) {
+  const reservation = await Reservation.get(req.params.id);
+  const customer = await Customer.get(reservation.customerId);
+
+  return res.render('reservation_edit_form.html', {
+    customer,
+    reservation
+  });
+});
+
 /** Show a customer, given their ID. */
 
 router.get("/:id/", async function (req, res, next) {
@@ -83,6 +95,7 @@ router.get("/:id/edit/", async function (req, res, next) {
 router.post("/:id/edit/", async function (req, res, next) {
   const customer = await Customer.get(req.params.id);
   customer.firstName = req.body.firstName;
+  customer.middleName = req.body.middleName;
   customer.lastName = req.body.lastName;
   customer.phone = req.body.phone;
   customer.notes = req.body.notes;
@@ -99,20 +112,16 @@ router.post("/:id/add-reservation/", async function (req, res, next) {
   const numGuests = req.body.numGuests;
   const notes = req.body.notes;
 
-  console.log('collected form data');
   const reservation = new Reservation({
     customerId,
     startAt,
     numGuests,
     notes,
   });
-  console.log('reservation instance', reservation);
   await reservation.save();
-  console.log('reservation was saved', reservation);
 
   return res.redirect(`/${customerId}/`);
 });
-
 
 
 module.exports = router;
