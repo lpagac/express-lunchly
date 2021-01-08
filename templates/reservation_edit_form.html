@@ -1,47 +1,30 @@
 {% extends 'base.html' %}
 
-{% block title %}Edit {{ customer.fullName }}{% endblock %}
+{% block title %}Edit reservation for {{ customer.fullName }}{% endblock %}
 
 {% block content %}
 
-  <form action="/{{ customer.id }}/edit/" method="POST">
-    <h1>Edit Customer</h1>
+  <form action="/reservations/{{ reservation.id }}/edit/" method="POST">
+    <h1>Edit the Reservation</h1>
 
     <div class="form-group">
-      <label for="first-name">First Name: </label>
-      <input id="first-name"
-             class="form-control"
-             name="firstName"
-             value="{{ customer.firstName }}">
+      <label for="start">Start</label>
+      <small id="startHelpBlock" class="form-text text-muted">
+        You can use this format: <i>yyyy-mm-dd hh:mm am/pm</i>
+      </small>
+      <input id="start" class="form-control" name="startAt" value="{{ reservation.startAt }}" placeholder="yyyy-mm-dd hh:mm am/pm">
     </div>
     <div class="form-group">
-      <label for="middle-name">Middle Name: </label>
-      <input id="middle-name"
-             class="form-control"
-             name="middleName"
-             value="{{ customer.middleName }}">
+      <label for="num-guests"># of Guests:</label>
+      <input class="form-control" value="2" name="numGuests" value="{{ reservation.numGuests }}" type="number" id="num-guests">
     </div>
     <div class="form-group">
-      <label for="last-name">Last Name:</label>
-      <input id="last-name"
-             class="form-control"
-             name="lastName"
-             value="{{ customer.lastName }}">
+      <label for="notes">Notes:</label>
+      <textarea class="form-control" name="notes" id="notes">
+        {{ reservation.notes }}
+      </textarea>
     </div>
-    <div class="form-group">
-      <label for="phone">Phone:</label>
-      <input id="phone"
-             class="form-control"
-             name="phone"
-             value="{{ customer.phone }}">
-    </div>
-    <div class="form-group">
-      <label for="notes"></label>Notes:
-      <textarea id="notes"
-                class="form-control"
-                name="notes">{{ customer.notes }}</textarea>
-    </div>
-    <button class="btn btn-primary">Add</button>
+    <button class="btn btn-primary">Edit</button>
     <a href="/{{ customer.id }}/" class="btn btn-danger">Cancel</a>
   </form>
 

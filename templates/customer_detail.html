@@ -36,9 +36,8 @@
       {% endfor %}
     </ul>
     {% else %}
-    <p>None!</p>
+      <p>None!</p>
     {% endif %}
-
   </div>
 
   <div class="col-6">
@@ -46,6 +45,9 @@
     <form action="/{{ customer.id }}/add-reservation/" method="POST">
       <div class="form-group">
         <label for="start">Start</label>
+        <small id="startHelpBlock" class="form-text text-muted">
+          Use this format: <i>yyyy-mm-dd hh:mm am/pm</i>
+        </small>
         <input id="start" class="form-control" name="startAt" placeholder="yyyy-mm-dd hh:mm am/pm">
       </div>
       <div class="form-group">

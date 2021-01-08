@@ -60,7 +60,7 @@ router.get("/best", async function (req, res, next) {
   );
 });
 
-/** Handle editing a reservation */
+/** Shows the form to edit a reservation */
 
 router.get('/reservations/:id/edit', async function (req, res, next) {
   const reservation = await Reservation.get(req.params.id);
@@ -70,6 +70,19 @@ router.get('/reservations/:id/edit', async function (req, res, next) {
     customer,
     reservation
   });
+});
+
+/** Handle editing a reservation */
+
+router.post('/reservations/:id/edit', async function (req, res, next) {
+  const reservation = await Reservation.get(req.params.id);
+  reservation.startAt = new Date(req.body.startAt);
+  reservation.numGuests = req.body.numGuests;
+  reservation.notes = req.body.notes;
+
+  await reservation.save();
+
+  return res.redirect(`/${reservation.customerId}/`);
 });
 
 /** Show a customer, given their ID. */
