@@ -67,17 +67,18 @@ class Customer {
 
   static async search(term) {
     let portion = `%${term}%`;
-      const results = await db.query(
-        `SELECT id,
-                first_name AS "firstName",
-                last_name  AS "lastName",
-                phone,
-                notes
-        FROM customers
-        WHERE first_name ILIKE $1
-          OR last_name ILIKE $1`,
-        [portion],
-      );
+  
+    const results = await db.query(
+      `SELECT id,
+              first_name AS "firstName",
+              last_name  AS "lastName",
+              phone,
+              notes
+      FROM customers
+      WHERE first_name ILIKE $1
+        OR last_name ILIKE $1`,
+      [portion],
+    );
 
     return results.rows.map(c => new Customer(c));
   }
