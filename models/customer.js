@@ -14,6 +14,13 @@ class Customer {
     this.lastName = lastName;
     this.phone = phone;
     this.notes = notes;
+    this.fullName = this.fullName();
+  }
+
+  /* Return full name of customer */
+
+  fullName() {
+    return `${this.firstName} ${this.lastName}`;
   }
 
   /** find all customers. */
@@ -56,6 +63,43 @@ class Customer {
     return new Customer(customer);
   }
 
+  /** Search users by the term */
+
+  static async search(term) {
+    console.log(term);
+      const results = await db.query(
+        `SELECT id,
+                first_name AS "firstName",
+                last_name  AS "lastName",
+                phone,
+                notes
+        FROM customers
+        WHERE first_name ILIKE '%' || $1 || '%'
+          OR last_name ILIKE '%' || $1 || '%'`,
+        [term],
+      );
+
+    return results.rows.map(c => new Customer(c));
+  }
+
+  /** Get the top 10 customers with most reservations */
+
+  static async topTen() {
+      const results = await db.query(
+        `SELECT customers.id,
+                first_name AS "firstName",
+                last_name  AS "lastName",
+                phone,
+                customers.notes
+        FROM customers
+          JOIN reservations ON customers.id = reservations.customer_id
+          GROUP BY customers.id
+        ORDER BY count(*) DESC
+        LIMIT 10`);
+
+    return results.rows.map(c => new Customer(c));
+  }
+
   /** get all reservations for this customer. */
 
   async getReservations() {
@@ -91,11 +135,7 @@ class Customer {
     }
   }
 
-  /* Return full name of customer */
-
-  fullName() {
-    return `${this.firstName} ${this.lastName}`;
-  }
+  
 }
 
 module.exports = Customer;

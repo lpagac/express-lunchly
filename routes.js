@@ -13,7 +13,7 @@ const router = new express.Router();
 
 router.get("/", async function (req, res, next) {
   const customers = await Customer.all();
-  return res.render("customer_list.html", { customers });
+  return res.render("customer_list.html", { customers, heading: "Customers" });
 });
 
 /** Form to add a new customer. */
@@ -30,6 +30,37 @@ router.post("/add/", async function (req, res, next) {
   await customer.save();
 
   return res.redirect(`/${customer.id}/`);
+});
+
+/** Handles searching for specific users */
+
+router.get("/search", async function (req, res, next) {
+  const searchTerm = req.query.term;
+  console.log("found searchTerm ", searchTerm)
+  const customers = await Customer.search(searchTerm);
+  console.log("found customers ", customers)
+
+  return res.render("customer_list.html", 
+    { 
+      customers, 
+      heading: `Search results for: ${searchTerm}`,
+      term: searchTerm 
+    }
+  );
+});
+
+/** Shows the top 10 customers with the most reservations */
+
+router.get("/best", async function (req, res, next) {
+  console.log("before getting customers")
+  const customers = await Customer.topTen();
+
+  return res.render("customer_list.html", 
+    { 
+      customers, 
+      heading: `Best Customers!`,
+    }
+  );
 });
 
 /** Show a customer, given their ID. */
@@ -84,5 +115,7 @@ router.post("/:id/add-reservation/", async function (req, res, next) {
 
   return res.redirect(`/${customerId}/`);
 });
+
+
 
 module.exports = router;
