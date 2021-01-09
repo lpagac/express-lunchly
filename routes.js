@@ -50,7 +50,7 @@ router.get("/search", async function (req, res, next) {
 /** Shows the top 10 customers with the most reservations */
 
 router.get("/best", async function (req, res, next) {
-  const customers = await Customer.topTen();
+  let customers = await Customer.topTen();
 
   return res.render("customer_list.html", 
     { 

@@ -13,6 +13,21 @@
           <a href="/{{ customer.id }}/">
             {{ customer.fullName }}
           </a>
+          <br>
+          {% if customer.mostRecent !== false %}
+          <a href="/reservations/{{customer.mostRecent.id}}/edit">
+            <p class="text-muted">
+              {{ customer.mostRecent.startAt }}
+              for {{ customer.mostRecent.numGuests }}
+            </p>
+          </a>
+          {% else %}
+          <p class="text-muted">
+            <i>
+              No Reservations for this Customer
+            </i> 
+          </p>
+          {% endif %}
         </li>
       {% endfor %}
     </{% if heading === 'Best Customers!' %}ol{% else %}ul{% endif %}>

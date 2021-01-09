@@ -6,7 +6,6 @@ const moment = require("moment");
 
 const db = require("../db");
 const { NotFoundError } = require("../expressError");
-const Customer = require('./customer');
 
 /** A reservation for a party */
 
