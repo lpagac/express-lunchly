@@ -116,6 +116,8 @@ class Customer {
     return await Customer._setRecentRes(customers);
   }
 
+  /** Static method to set most recent reservation of customers */
+
   static async _setRecentRes(customers) {
     
     for(let customer of customers) {
